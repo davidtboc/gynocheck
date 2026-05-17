@@ -6,7 +6,8 @@ export const Route = createFileRoute('/api/checkout')({
     handlers: {
       POST: async ({ request }) => {
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-        const origin = process.env.PUBLIC_SITE_URL || 'http://localhost:3000'
+        const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
+        const origin = vercelUrl || process.env.PUBLIC_SITE_URL || 'http://localhost:3000'
 
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card'],
